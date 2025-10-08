@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -77,8 +76,14 @@ video {
 </div>
 <script>
 navigator.mediaDevices.getUserMedia({video: true})
-  .then(stream => { document.getElementById('video').srcObject = stream; })
-  .catch(err => { console.log('Camera access error: ' + err); alert('Camera access error: ' + err); });
+  .then(stream => {
+    document.getElementById('video').srcObject = stream;
+    alert('Camera stream started!');
+  })
+  .catch(err => {
+    console.log('Camera access error: ' + err);
+    alert('Camera access error: ' + err);
+  });
 </script>
 </body>
 </html>
