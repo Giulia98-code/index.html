@@ -1,0 +1,84 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mirror NFT</title>
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+}
+.stage {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  aspect-ratio: 3/4;
+  border-radius: 50% / 50%;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 30px rgba(255,255,255,0.2);
+}
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.frame {
+  position: absolute;
+  inset: 0;
+  border: 5px solid red; /* Rosso per debug */
+  border-radius: 50% / 50%;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 15px;
+  z-index: 2;
+}
+.frame-text {
+  color: red; /* Rosso per debug */
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(0,0,0,0.7);
+  z-index: 3;
+}
+.subtitle-text {
+  display: block;
+  font-size: 1rem;
+  color: red; /* Rosso per debug */
+  text-align: center;
+  margin-top: 5px;
+  font-weight: normal;
+  text-shadow: 0 0 6px rgba(0,0,0,0.7);
+  z-index: 3;
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <video id="video" autoplay playsinline></video>
+  <div class="frame">
+    <span class="frame-text">LOOK WITHIN</span>
+    <span class="subtitle-text">Subtitles and revision by QTSS</span>
+  </div>
+</div>
+<script>
+navigator.mediaDevices.getUserMedia({video: true})
+  .then(stream => { document.getElementById('video').srcObject = stream; })
+  .catch(err => { console.log('Camera access error: ' + err); alert('Camera access error: ' + err); });
+</script>
+</body>
+</html>
