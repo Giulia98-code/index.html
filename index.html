@@ -1,13 +1,377 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="./style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pen</title>
-  </head>
-  <body>
 
-    <script src="./script.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff7fb">
+  <title>Una domanda per te</title>
+
+  <style>
+    :root {
+      --pink: #e9a0bf;
+      --purple: #a18bd4;
+      --ink: #49364e;
+      --muted: #97869b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 22px;
+      display: grid;
+      place-items: center;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 10% 10%, #f8dce8 0, transparent 45%),
+        radial-gradient(ellipse at 90% 90%, #ded6fa 0, transparent 45%),
+        #fff7fb;
+    }
+
+    .card {
+      width: min(100%, 430px);
+      padding: 30px 23px 26px;
+      border: 1px solid white;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 22px 70px #80658b20;
+      animation: appear 0.7s ease both;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .brand {
+      color: #a17aab;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .status {
+      padding: 7px 10px;
+      border-radius: 20px;
+      background: #f7eaf4;
+      color: #a16b9b;
+      font-size: 10px;
+    }
+
+    .orbit {
+      width: 112px;
+      height: 112px;
+      margin: 32px auto 25px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #fae1ed, #e5defb);
+    }
+
+    .orbit::before,
+    .orbit::after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border: 1px solid #e9c9e0;
+      border-radius: 50%;
+      animation: rotate 12s linear infinite;
+    }
+
+    .orbit::after {
+      inset: 7px;
+      border-style: dashed;
+      border-color: #b9a8e7;
+      animation-direction: reverse;
+    }
+
+    @keyframes rotate {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .initial {
+      font-family: Georgia, serif;
+      font-size: 40px;
+      color: #a16f9c;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: #b17da7;
+      text-align: center;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    h1 {
+      max-width: 330px;
+      margin: 0 auto;
+      font-family: Georgia, serif;
+      font-size: clamp(27px, 7vw, 34px);
+      font-weight: normal;
+      line-height: 1.25;
+      text-align: center;
+    }
+
+    .description {
+      max-width: 300px;
+      margin: 15px auto 27px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .answers {
+      display: grid;
+      gap: 11px;
+    }
+
+    .answer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 14px;
+      border: 1px solid #eee3ef;
+      border-radius: 15px;
+      background: white;
+      color: #65576b;
+      font-family: inherit;
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: border 0.2s, background 0.2s;
+    }
+
+    .answer:hover {
+      border-color: #d9c3e6;
+    }
+
+    .number {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: #f8eff6;
+      color: #ac82a8;
+      font-size: 11px;
+    }
+
+    .answer.correct {
+      border-color: #d9b5df;
+      background: linear-gradient(110deg, #fceaf2, #f0eaff);
+      color: #855a91;
+    }
+
+    .answer.correct .number {
+      background: white;
+      color: #9869ad;
+    }
+
+    .arrow {
+      margin-left: auto;
+      color: #9869ad;
+      font-size: 21px;
+    }
+
+    .notice {
+      display: none;
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 15px;
+      background: #fff1f5;
+      color: #a15d7e;
+      font-size: 13px;
+      line-height: 1.7;
+      text-align: center;
+      animation: appear 0.3s ease both;
+    }
+
+    .notice.show {
+      display: block;
+    }
+
+    .notice.success {
+      margin-top: 24px;
+      padding: 30px 20px;
+      border: 1px solid #e7c8e6;
+      border-radius: 22px;
+      background: linear-gradient(145deg, #fff0f6, #eee7ff);
+      color: #80558d;
+      font-family: Georgia, serif;
+      font-size: clamp(24px, 6vw, 29px);
+      line-height: 1.5;
+      box-shadow: 0 12px 30px #c8a3d522;
+      animation: reveal 0.65s ease both;
+    }
+
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .pointer {
+      display: inline-block;
+      margin-right: 7px;
+      font-size: 17px;
+      animation: point 0.7s ease-in-out infinite alternate;
+    }
+
+    @keyframes point {
+      from { transform: translateY(-2px); }
+      to { transform: translateY(5px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card" id="quiz">
+
+    <div class="top">
+      <div class="brand">A LITTLE TEST</div>
+      <div class="status">UNA DOMANDA PER TE</div>
+    </div>
+
+    <div class="orbit" aria-hidden="true">
+      <span class="initial">F.</span>
+    </div>
+
+    <p class="eyebrow">DOMANDA N. 01</p>
+
+    <h1 id="question">Chi è un cucciolino stupendo?</h1>
+
+    <p class="description" id="description">
+      C'è una sola risposta che voglio sentire.
+      Vediamo se riesci a indovinarla.
+    </p>
+
+    <div class="answers" id="answers">
+      <button class="answer wrong" type="button">
+        <span class="number">01</span>
+        <span>Non lo so</span>
+      </button>
+
+      <button class="answer wrong" type="button">
+        <span class="number">02</span>
+        <span>Non io</span>
+      </button>
+
+      <button class="answer correct" id="fabrizio" type="button">
+        <span class="number">03</span>
+        <span>Fabrizio</span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <div
+      class="notice"
+      id="notice"
+      role="status"
+      aria-live="polite">
+    </div>
+
+  </main>
+
+  <script>
+    "use strict";
+
+    const wrongAnswers = document.querySelectorAll(".wrong");
+    const correctAnswer = document.getElementById("fabrizio");
+    const notice = document.getElementById("notice");
+    const answers = document.getElementById("answers");
+    const question = document.getElementById("question");
+    const description = document.getElementById("description");
+
+    let completed = false;
+
+    wrongAnswers.forEach(function (button) {
+      button.addEventListener("click", function () {
+        if (completed) return;
+
+        notice.className = "notice show";
+        notice.replaceChildren();
+
+        const pointer = document.createElement("span");
+        pointer.className = "pointer";
+        pointer.textContent = "↓";
+
+        notice.append(
+          pointer,
+          document.createTextNode(
+            "Non puoi cliccare questa risposta. La risposta giusta è Fabrizio."
+          )
+        );
+
+        correctAnswer.animate(
+          [
+            { transform: "translateY(0)" },
+            { transform: "translateY(5px)" },
+            { transform: "translateY(0)" }
+          ],
+          {
+            duration: 350,
+            easing: "ease-in-out"
+          }
+        );
+      });
+    });
+
+    correctAnswer.addEventListener("click", function () {
+      if (completed) return;
+      completed = true;
+
+      question.textContent = "Lo sapevo.";
+      description.hidden = true;
+      answers.hidden = true;
+
+      notice.className = "notice success show";
+      notice.textContent =
+        "Il titolo di cucciolino bellissimo è tuo.";
+
+      notice.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+    });
+  </script>
+</body>
 </html>
